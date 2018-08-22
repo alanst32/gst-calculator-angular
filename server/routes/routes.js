@@ -1,14 +1,14 @@
 /**
  * Created by alanterriaga on 30/7/18.
  */
-var mongoose = require("mongoose");
-var express = require('express');
-var router = express.Router();
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
+const express = require('express');
+const router = express.Router();
+const path = require('path');
 
 var User 	= require('../model/User');
 
-//ROUTE SEARCH ============================================
+//ROUTE SEARCH USER ============================================
 router.post('/api/findUser', function(req, res){
 
     User.findOne(
@@ -24,8 +24,19 @@ router.post('/api/findUser', function(req, res){
         });
 });
 
-router.get('/', (req, res) => {
-  res.send('api works');
+
+
+//router.get('/', (req, res) => {
+//  res.sendFile('../../dist/gst-calculator-angular/index.html'));
+//});
+
+
+router.get('/*',  function(req, res, next) {
+    console.log("Reloading");
+//    res.sendFile('index.html', { root: __dirname });
+    res.sendFile('../../src/index.html');
 });
+
+
 
 module.exports = router;

@@ -63,14 +63,19 @@ import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
 
 const routes: Routes = [
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'main',
-    component: MainComponent
-  }
+    {
+      path: '',
+      redirectTo: 'login',
+      pathMatch: 'full'
+    },
+    {
+      path: 'login',
+      component: LoginComponent
+    },
+    {
+      path: 'main',
+      component: MainComponent
+    }
 ];
 
 @NgModule({
@@ -86,6 +91,7 @@ const routes: Routes = [
       MaterialModule,
       MatInputModule,
       ReactiveFormsModule,
+      RouterModule.forRoot(routes)
   ],
   providers: [],
   entryComponents: [LoginComponent],
