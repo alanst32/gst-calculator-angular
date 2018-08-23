@@ -25,4 +25,7 @@
     <div class="button-row" align="center">
         <button mat-stroked-button [disabled]="validationsForm.invalid" (click)="login_btnClick()">Enter</button>
     </div>
+    <div class="user-incorrect" align="center" hidden={{userInvalid}}>
+        Authentication failed!
+    </div>
 </form>

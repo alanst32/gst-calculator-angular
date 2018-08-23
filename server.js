@@ -20,20 +20,21 @@ var db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"))
 
 //==================================================================================
-// Setting the applicatoin
+// Setting the application
 
 // Parsers for POST data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
 // Point static path to dist
 app.use(express.static(path.join(__dirname, 'dist/gst-calculator-angular')));
 
 // Set our api routes
-app.use('/api', router);
+app.use('/', router);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/gst-calculator-angular/index.html'));
+    res.sendFile(path.join(__dirname, 'dist/gst-calculator-angular/index.html'));
 });
 
 

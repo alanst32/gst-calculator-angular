@@ -1,5 +1,5 @@
 import { Component, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormControl, FormGroupDirective, FormGroup, NgForm, Validators } from '@angular/forms';
 import {ErrorStateMatcher } from '@angular/material/core';
 
@@ -20,6 +20,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class LoginComponent{
 
+  userInvalid: boolean = false
+
   constructor(private http: HttpClient){
   }
 
@@ -34,11 +36,26 @@ export class LoginComponent{
   matcher = new MyErrorStateMatcher();
 
   public login_btnClick() {
-      this.http.get("api/findUser").subscribe(data => {
-          console.log(data);
+
+      var email = this.validationsForm.get('usernameControl').value
+      var pass = this.validationsForm.get("passwordControl").value
+      var url = "/api/findUser";
+      var params = {"username":email}
+
+      this.http.post(url, params)
+          .subscribe(data => {
+
+            if(pass == data['password']){
+
+            }
+            else{
+                this.userInvalid = true;
+            }
       });
   }
+
+  public openMainPage(){
+      console.log("open main page");
+  }
 }
-
-
 

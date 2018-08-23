@@ -14,13 +14,13 @@ router.post('/api/findUser', function(req, res){
     User.findOne(
         {
             username: req.body.username
-
-        }, function(err, users){
+        },
+        function(err, user){
             if(err){
                 res.send(err);
             }
 
-            res.json(users)
+            res.json(user)
         });
 });
 
