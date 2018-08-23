@@ -24,19 +24,4 @@ router.post('/api/findUser', function(req, res){
         });
 });
 
-
-
-//router.get('/', (req, res) => {
-//  res.sendFile('../../dist/gst-calculator-angular/index.html'));
-//});
-
-
-router.get('/*',  function(req, res, next) {
-    console.log("Reloading");
-//    res.sendFile('index.html', { root: __dirname });
-    res.sendFile('../../src/index.html');
-});
-
-
-
 module.exports = router;

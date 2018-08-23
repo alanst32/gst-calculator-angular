@@ -1,10 +1,15 @@
 
-import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { Injectable, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
+
+import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
+import { MainComponent } from './main/main.component';
 
 import {
   MatAutocompleteModule,
@@ -48,6 +53,7 @@ import {
     exports: [
       MatButtonModule,
       MatButtonToggleModule,
+      MatInputModule,
       MatSidenavModule,
       MatSliderModule,
       MatSlideToggleModule,
@@ -58,9 +64,15 @@ import {
 })
 export class MaterialModule {}
 
-import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { MainComponent } from './main/main.component';
+@NgModule({
+    exports: [
+      BrowserAnimationsModule,
+      FormsModule,
+      HttpClientModule,
+      ReactiveFormsModule,
+    ]
+})
+export class AngularExportModule {}
 
 const routes: Routes = [
     {
@@ -86,11 +98,8 @@ const routes: Routes = [
   ],
   imports: [
       BrowserModule,
-      BrowserAnimationsModule,
-      FormsModule,
+      AngularExportModule,
       MaterialModule,
-      MatInputModule,
-      ReactiveFormsModule,
       RouterModule.forRoot(routes)
   ],
   providers: [],

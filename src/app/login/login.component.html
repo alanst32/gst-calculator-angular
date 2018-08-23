@@ -1,28 +1,28 @@
-<form class="login-form">
+<form class="login-form" [formGroup]="validationsForm">
     <div>
         <mat-form-field class="login-width">
-            <input matInput placeholder="Email" [formControl]="emailFormControl" [errorStateMatcher]="matcher">
+            <input matInput placeholder="Email" class="form-control" formControlName="usernameControl" [errorStateMatcher]="matcher">
 
-            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+            <mat-error *ngIf="validationsForm.controls['usernameControl'].hasError('email') &&
+                          !validationsForm.controls['usernameControl'].hasError('required')">
                 Please enter a valid email address
             </mat-error>
 
-            <mat-error *ngIf="emailFormControl.hasError('required')">
+            <mat-error *ngIf="validationsForm.controls['usernameControl'].hasError('required')">
                 Email is <strong>required</strong>
             </mat-error>
         </mat-form-field>
     </div>
     <div>
         <mat-form-field class="login-width">
-            <input matInput type="password" placeholder="Password" [formControl]="loginFormControl" [errorStateMatcher]="matcher">
+            <input matInput type="password" placeholder="Password" class="form-control" formControlName="passwordControl" [errorStateMatcher]="matcher">
 
-            <mat-error *ngIf="loginFormControl.hasError('required')">
+            <mat-error *ngIf="validationsForm.controls['passwordControl'].hasError('required')">
                 Password is <strong>required</strong>
             </mat-error>
         </mat-form-field>
     </div>
     <div class="button-row" align="center">
-        <button mat-stroked-button>Enter</button>
+        <button mat-stroked-button [disabled]="validationsForm.invalid" (click)="login_btnClick()">Enter</button>
     </div>
 </form>
-

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
+import { Component, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { FormControl, FormGroupDirective, FormGroup, NgForm, Validators } from '@angular/forms';
+import {ErrorStateMatcher } from '@angular/material/core';
+
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -10,23 +12,32 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     }
 }
 
+@Injectable()
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent{
 
-  emailFormControl = new FormControl('', [
-      Validators.required,
-      Validators.email,
-  ]);
+  constructor(private http: HttpClient){
+  }
 
-  loginFormControl = new FormControl('', [
-      Validators.required,
-  ]);
+  validationsForm = new FormGroup({
+      usernameControl: new FormControl('', Validators.compose([
+          Validators.required,
+          Validators.email,
+      ])),
+      passwordControl: new FormControl('', Validators.required)
+  });
 
-   matcher = new MyErrorStateMatcher();
+  matcher = new MyErrorStateMatcher();
+
+  public login_btnClick() {
+      this.http.get("api/findUser").subscribe(data => {
+          console.log(data);
+      });
+  }
 }
 
 
