@@ -1,6 +1,7 @@
 import { Component, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormControl, FormGroupDirective, FormGroup, NgForm, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import {ErrorStateMatcher } from '@angular/material/core';
 
 
@@ -22,8 +23,10 @@ export class LoginComponent{
 
   userInvalid: boolean = false
 
-  constructor(private http: HttpClient){
-  }
+  constructor(
+      private http: HttpClient,
+      private router: Router
+  ){}
 
   validationsForm = new FormGroup({
       usernameControl: new FormControl('', Validators.compose([
@@ -46,7 +49,7 @@ export class LoginComponent{
           .subscribe(data => {
 
             if(pass == data['password']){
-
+                this.openMainPage();
             }
             else{
                 this.userInvalid = true;
@@ -55,7 +58,7 @@ export class LoginComponent{
   }
 
   public openMainPage(){
-      console.log("open main page");
+      this.router.navigate(['/main', {}]);
   }
 }
 

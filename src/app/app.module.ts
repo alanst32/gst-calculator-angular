@@ -2,9 +2,9 @@
 import { HttpClientModule } from '@angular/common/http';
 import { Injectable, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -54,6 +54,7 @@ import {
       MatButtonModule,
       MatButtonToggleModule,
       MatInputModule,
+      MatPaginatorModule,
       MatSidenavModule,
       MatSliderModule,
       MatSlideToggleModule,
@@ -70,6 +71,7 @@ export class MaterialModule {}
       FormsModule,
       HttpClientModule,
       ReactiveFormsModule,
+      RouterModule
     ]
 })
 export class AngularExportModule {}

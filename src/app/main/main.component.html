@@ -1,3 +1,49 @@
-<p>
-  main works!
-</p>
+<form class="main-form" [formGroup]="mainFormGroup">
+    <div class="rcorners">
+        <div>
+            <p class="label" style="text-align:center">Enter Price to Calculate</p>
+            <mat-form-field class="all-width">
+                <input matInput type="number" class="form-control" formControlName="priceControl" [errorStateMatcher]="matcher">
+
+                <mat-error *ngIf="mainFormGroup.controls['priceControl'].hasError('required')">
+                  Please enter a valid price
+                </mat-error>
+
+            </mat-form-field>
+        </div>
+        <div class="button-row" align="center">
+            <table>
+                <tr>
+                    <td><button mat-raised-button class="main-button" [disabled]="mainFormGroup.invalid" (click)="add_btnClick()">Add GST</button></td>
+                    <td>&nbsp;</td>
+                    <td><button mat-raised-button class="main-button" (click)="close_btnClick()">Close</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div align="center" class="divTable" *ngIf="showTable">
+        <mat-table #table align="center" [dataSource]="dataSource">
+
+            <ng-container matColumnDef="inputPrice">
+                <mat-header-cell *matHeaderCellDef>Input Price</mat-header-cell>
+                <mat-cell *matCellDef="let history">{{history.inputPrice| currency}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="priceAfter">
+                <mat-header-cell *matHeaderCellDef>Price After GST</mat-header-cell>
+                <mat-cell *matCellDef="let history">{{history.priceAfter| currency}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="gstAmount">
+                <mat-header-cell *matHeaderCellDef>GST Amount</mat-header-cell>
+                <mat-cell *matCellDef="let history">{{history.gstAmount| currency}}</mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+        </mat-table>
+
+        <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+</form>

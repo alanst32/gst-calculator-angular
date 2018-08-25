@@ -1,0 +1,60 @@
+.main-form {
+    min-width: 150px;
+    width: 100%;
+    padding-top: 30px;
+}
+
+.rcorners {
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    margin: 0 auto;
+    padding: 60px;
+    width: 600px;
+    height: 300px;
+}
+
+.divTable {
+    padding-top: 60px;
+    margin: 0 auto;
+    width: 600px;
+}
+
+.button-row {
+    margin-right: 8px;
+    padding-top: 30px;
+    font-color: black;
+}
+
+.main-button {
+    background-color:rgb(255,0,0);
+    opacity:0.6;
+}
+
+.label{
+    font-family: verdana;
+    font-size: 20px;
+    color: rgb(0, 128, 255)
+}
+
+.mat-table {
+  overflow: auto;
+  width: 100%;
+  justify-content:center;
+}
+
+.mat-header-cell{
+  font-weight: bold;
+  font-size: 14px;
+  display:flex;
+  justify-content:center;
+}
+
+.mat-cell{
+  font-size: 14px;
+  display:flex;
+  justify-content:center;
+}
+
+.all-width {
+    width: 100%;
+}
