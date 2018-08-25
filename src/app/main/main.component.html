@@ -26,17 +26,17 @@
 
             <ng-container matColumnDef="inputPrice">
                 <mat-header-cell *matHeaderCellDef>Input Price</mat-header-cell>
-                <mat-cell *matCellDef="let history">{{history.inputPrice| currency}}</mat-cell>
+                <mat-cell *matCellDef="let element">{{element.inputPrice| currency}}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="priceAfter">
                 <mat-header-cell *matHeaderCellDef>Price After GST</mat-header-cell>
-                <mat-cell *matCellDef="let history">{{history.priceAfter| currency}}</mat-cell>
+                <mat-cell *matCellDef="let element">{{element.priceAfter| currency}}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="gstAmount">
                 <mat-header-cell *matHeaderCellDef>GST Amount</mat-header-cell>
-                <mat-cell *matCellDef="let history">{{history.gstAmount| currency}}</mat-cell>
+                <mat-cell *matCellDef="let element">{{element.gstAmount| currency}}</mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -44,6 +44,6 @@
 
         </mat-table>
 
-        <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+        <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[10, 20]" [length]="dataSource.length" [showFirstLastButtons]="true"></mat-paginator>
     </div>
 </form>

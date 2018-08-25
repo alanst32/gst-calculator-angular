@@ -1,10 +1,12 @@
-import { Component, Injectable, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
+import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormControl, FormGroupDirective, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { ErrorStateMatcher } from '@angular/material/core';
 
+import { environment } from '../../environments/environment';
 import { CalcHistory } from '../../../server/model/CalcHistory.js';
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -19,81 +21,88 @@ isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | nu
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css']
+  styleUrls: ['./main.component.css'],
+  providers: [Location, {provide: LocationStrategy, useClass: PathLocationStrategy}]
 })
-export class MainComponent implements OnInit, AfterViewInit{
+export class MainComponent implements OnInit{
 
-  gstPercentage: number = 10;
-  displayedColumns = ['inputPrice', 'priceAfter', 'gstAmount'];
-  calcHistoryList: CalcHistory[];
-  dataSource = new MatTableDataSource<CalcHistory>();
-  showTable: boolean = false
+    private gstPercentage: number = 10;
+    private displayedColumns = ['inputPrice', 'priceAfter', 'gstAmount'];
+    public dataSource = new MatTableDataSource<CalcHistory>([]);
+    private showTable: boolean = false
+    private paginator: MatPaginator;
+    private headers = new HttpHeaders({'Authorization': environment.apiKey});
 
-  matcher = new MyErrorStateMatcher();
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+    matcher = new MyErrorStateMatcher();
 
+    constructor(
+        private http: HttpClient,
+        private location: Location,
+        private router: Router
+    ){}
 
-  constructor(
-      private http: HttpClient,
-      private router: Router
-  ){}
+    mainFormGroup = new FormGroup({
+        priceControl: new FormControl('', Validators.compose([
+            Validators.required
+        ]))
+    });
 
-  mainFormGroup = new FormGroup({
-      priceControl: new FormControl('', Validators.compose([
-          Validators.required
-      ]))
-  });
+    ngOnInit() {
 
-  ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.refresh_dataTable();
+    }
 
-  }
+    @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
+        this.paginator = mp;
+        this.setDataSourceAttributes();
+    }
 
-  ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator
-  }
+    setDataSourceAttributes() {
+        this.dataSource.paginator = this.paginator;
+    }
 
-  public add_btnClick(){
-      var url = "/api/saveCalc";
+    public add_btnClick(){
+        var url = "/api/saveCalc";
 
-      var inputPrice = this.mainFormGroup.get('priceControl').value
-      var gstAmount = inputPrice * this.gstPercentage / 100;
-      var priceAfter = inputPrice + gstAmount;
+        var inputPrice = this.mainFormGroup.get('priceControl').value
+        var gstAmount = inputPrice * this.gstPercentage / 100;
+        var priceAfter = inputPrice + gstAmount;
 
-      var params = {
-          "inputPrice": inputPrice,
-          "priceAfter": priceAfter,
-          "gstAmount": gstAmount
-      }
+        var params = {
+            "inputPrice": inputPrice,
+            "priceAfter": priceAfter,
+            "gstAmount": gstAmount
+        }
 
-      this.http.post(url, params)
-          .subscribe(data => {
+        this.http.post(url, params, {headers: this.headers})
+            .subscribe(data => {
 
-           this.refresh_dataTable();
-      });
-  }
+             this.refresh_dataTable();
+        });
+    }
 
+    public refresh_dataTable(){
 
-  public refresh_dataTable(){
+        var url = "api/getCalcHistory";
 
-      var url = "api/getCalcHistory";
+        this.http.get(url, {headers: this.headers})
+            .subscribe(data => {
 
-      this.http.get(url)
-          .subscribe(data => {
-              const dataString = JSON.stringify(data);
+                if(data != null){
+                  const dataString = JSON.stringify(data);
 
-              this.dataSource = JSON.parse(dataString);
+                  this.dataSource = new MatTableDataSource<CalcHistory>(JSON.parse(dataString));
+                  this.dataSource.paginator = this.paginator;
 
-              console.log(this.dataSource);
+                  console.log(this.dataSource);
 
-              this.showTable = true;
-      });
-  }
+                  this.showTable = true;
+                }
+        });
+    }
 
-  public close_btnClick(){
-      this.router.navigate(['/login', {}]);
-  }
+    public close_btnClick(){
+        this.location.back();
+    }
 
 }
 

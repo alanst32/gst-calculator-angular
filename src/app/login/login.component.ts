@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormControl, FormGroupDirective, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {ErrorStateMatcher } from '@angular/material/core';
+import { environment } from '../../environments/environment';
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -21,7 +22,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class LoginComponent{
 
-  userInvalid: boolean = false
+  userInvalid: boolean = false;
+  private apiKey = environment.apiKey;
 
   constructor(
       private http: HttpClient,
@@ -42,13 +44,14 @@ export class LoginComponent{
 
       var email = this.validationsForm.get('usernameControl').value
       var pass = this.validationsForm.get("passwordControl").value
-      var url = "/api/findUser";
-      var params = {"username":email}
+      var url = "/api/findUser/"+email;
 
-      this.http.post(url, params)
+      const headers = new HttpHeaders({'Authorization': this.apiKey});
+
+      this.http.get(url, {headers: headers})
           .subscribe(data => {
 
-            if(pass == data['password']){
+            if( data != null && pass == data['password']){
                 this.openMainPage();
             }
             else{

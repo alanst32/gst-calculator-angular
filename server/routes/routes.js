@@ -10,11 +10,15 @@ var User 	= require('../model/User');
 var CalcHistory = require('../model/CalcHistory');
 
 //ROUTE SEARCH USER ============================================
-router.post('/api/findUser', function(req, res){
+router.get('/api/findUser/:username', function(req, res){
+
+    if (!req.headers.authorization) {
+        return res.status(403).json({ error: 'No credentials sent!' });
+    }
 
     User.findOne(
         {
-            username: req.body.username
+            username: req.params.username
         },
         function(err, user){
             if(err){
@@ -27,6 +31,10 @@ router.post('/api/findUser', function(req, res){
 
 //ROUTE SEARCH HISTORY
 router.get('/api/getCalcHistory', function(req, res){
+
+  if (!req.headers.authorization) {
+      return res.status(403).json({ error: 'No credentials sent!' });
+  }
 
   CalcHistory.find({})
       .sort([["createdAt", -1]])
@@ -44,7 +52,9 @@ router.get('/api/getCalcHistory', function(req, res){
 //ROUTE SAVE CAL HISTORY ============================================
 router.post('/api/saveCalc', function(req, res){
 
-    console.log(req.body)
+    if (!req.headers.authorization) {
+        return res.status(403).json({ error: 'No credentials sent!' });
+    }
 
     CalcHistory.create({
         inputPrice: req.body.inputPrice,
