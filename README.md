@@ -1,3 +1,6 @@
+# READ ME.
+This project is part of an article published at [Alan Terriaga](http://alanterriaga.com). Please verify the post published to understand better what was created.
+
 # GstCalculatorAngular
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.4.
